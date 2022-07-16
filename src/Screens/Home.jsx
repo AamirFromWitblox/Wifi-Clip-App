@@ -13,7 +13,7 @@ const Home = ({ navigation }) => {
 			<Text style={styles.title}>WiFi Clip Controller</Text>
 
 			<View style={styles.controls}>
-				<Text style={{ marginBottom: 20, alignSelf: "center", color: "#ccc" }}>
+				<Text style={{ alignSelf: "center", color: "#ccc" }}>
 					Choose your blox
 				</Text>
 
@@ -46,6 +46,16 @@ const Home = ({ navigation }) => {
 					</TouchableOpacity>
 				</View>
 			</View>
+
+			<View
+				style={{ marginBottom: 10, marginHorizontal: 50, alignItems: "center" }}
+			>
+				<TouchableOpacity onPress={() => navigation.navigate("tutorial")}>
+					<Text style={{ color: "#ccc", textDecorationLine: "underline" }}>
+						Tutorial
+					</Text>
+				</TouchableOpacity>
+			</View>
 		</View>
 	);
 };
@@ -76,7 +86,6 @@ const styles = StyleSheet.create({
 	},
 	controls: {
 		flex: 1,
-		// marginTop: 40,
 		justifyContent: "center",
 	},
 	imageContainer: {
