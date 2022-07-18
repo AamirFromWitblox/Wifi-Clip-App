@@ -4,6 +4,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { LinearGradient } from "expo-linear-gradient";
 import LottieView from "lottie-react-native";
 import axios from "axios";
+import Keypad from "../Components/Keypad";
 
 const Controller = ({ route }) => {
 	const { channel } = route.params;
@@ -189,6 +190,7 @@ const Controller = ({ route }) => {
 					</Text>
 				</>
 			)}
+			{connectionStatus.connected && isStarted && channel === 2 && <Keypad />}
 		</View>
 	);
 };
@@ -218,8 +220,8 @@ const styles = StyleSheet.create({
 	},
 	outputWrapper: {
 		backgroundColor: "#6984ad82",
-		height: 150,
-		width: 150,
+		height: 120,
+		width: 120,
 		justifyContent: "center",
 		alignItems: "center",
 		borderRadius: 10,

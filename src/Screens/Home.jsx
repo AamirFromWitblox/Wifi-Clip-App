@@ -41,7 +41,7 @@ const Home = ({ navigation }) => {
 							style={styles.bloxImage}
 						/>
 						<Text style={{ color: "white", alignSelf: "center" }}>
-							Double Channel
+							Dual Channel
 						</Text>
 					</TouchableOpacity>
 				</View>
