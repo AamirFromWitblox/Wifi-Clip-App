@@ -10,7 +10,7 @@ const Keypad = () => {
 	return (
 		<View style={styles.container}>
 			<Pad
-				img={require("../../assets/Arrows/up.png")}
+				img={require("../../assets/up.png")}
 				style={{
 					borderTopLeftRadius: borderRadius,
 					borderTopRightRadius: borderRadius,
@@ -26,10 +26,11 @@ const Keypad = () => {
 				}}
 			>
 				<Pad
-					img={require("../../assets/Arrows/left.png")}
+					img={require("../../assets/up.png")}
 					style={{
+						borderTopRightRadius: borderRadius,
 						borderTopLeftRadius: borderRadius,
-						borderBottomLeftRadius: borderRadius,
+						transform: [{ rotate: "-90deg" }],
 					}}
 					endpoint="LED_2"
 				/>
@@ -40,10 +41,11 @@ const Keypad = () => {
 				</View>
 
 				<Pad
-					img={require("../../assets/Arrows/right.png")}
+					img={require("../../assets/up.png")}
 					style={{
+						borderTopLeftRadius: borderRadius,
 						borderTopRightRadius: borderRadius,
-						borderBottomRightRadius: borderRadius,
+						transform: [{ rotate: "90deg" }],
 					}}
 					endpoint="LED_1"
 				/>
