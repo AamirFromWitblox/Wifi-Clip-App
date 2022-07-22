@@ -4,12 +4,16 @@ import React, { useEffect, useRef, useState } from "react";
 import { LinearGradient } from "expo-linear-gradient";
 import LottieView from "lottie-react-native";
 import axios from "axios";
-import Keypad from "../Components/Keypad";
+// import Keypad from "../Components/Keypad";
+import * as ScreenOrientation from "expo-screen-orientation";
 
-const baseUrl = "https://itzaamir.in";
+const baseUrl = "https://192.168.4.1";
+const STANDARD_MODE = "standard";
+const SPORTS_MODE = "sports";
 
-const Controller = ({ route }) => {
+const Controller = ({ navigation, route }) => {
 	const { channel } = route.params;
+
 	const animationRef = useRef(null);
 	const [connectionStatus, setConnectionStatus] = useState({
 		initiated: false,
@@ -19,6 +23,7 @@ const Controller = ({ route }) => {
 	const [output1Status, setOutput1Status] = useState("off");
 	const [output2Status, setOutput2Status] = useState("off");
 	const [isStarted, setIsStarted] = useState(false);
+	const [currMode, setCurrMode] = useState(STANDARD_MODE);
 
 	useEffect(() => {
 		const source = axios.CancelToken.source();
@@ -49,6 +54,8 @@ const Controller = ({ route }) => {
 		return () => {
 			clearInterval(interval);
 			source.cancel("Cancelling in cleanup.");
+			setConnectionStatus({});
+			lockScreenOrientationPortrait();
 		};
 	}, []);
 
@@ -67,6 +74,32 @@ const Controller = ({ route }) => {
 			setOutput2Status(status);
 		}
 	};
+
+	async function changeScreenOrientation() {
+		const mode = currMode === STANDARD_MODE ? SPORTS_MODE : STANDARD_MODE;
+
+		setCurrMode(mode);
+
+		if (mode === STANDARD_MODE) {
+			navigation.setOptions({ headerShown: true });
+			await lockScreenOrientationPortrait();
+		} else {
+			navigation.setOptions({ headerShown: false });
+			await lockScreenOrientationLandscape();
+		}
+	}
+
+	async function lockScreenOrientationPortrait() {
+		await ScreenOrientation.lockAsync(
+			ScreenOrientation.OrientationLock.PORTRAIT_UP
+		);
+	}
+
+	async function lockScreenOrientationLandscape() {
+		await ScreenOrientation.lockAsync(
+			ScreenOrientation.OrientationLock.LANDSCAPE
+		);
+	}
 
 	return (
 		<View style={{ ...styles.container }}>
@@ -194,7 +227,13 @@ const Controller = ({ route }) => {
 					</>
 				)}
 			</View>
-			<Button title={`Switch to sport mode`} color="#395278e3" />
+			<Button
+				title={`Switch to ${
+					currMode === STANDARD_MODE ? SPORTS_MODE : STANDARD_MODE
+				} mode`}
+				color="#395278e3"
+				onPress={changeScreenOrientation}
+			/>
 			{/* {connectionStatus.connected && isStarted && channel === 2 && <Keypad />} */}
 		</View>
 	);

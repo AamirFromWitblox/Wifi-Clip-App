@@ -5,10 +5,22 @@ import Controller from './src/Screens/Controller';
 import Home from './src/Screens/Home';
 import { Text, TouchableOpacity } from "react-native";
 import Tutorial from "./src/Screens/Tutorial";
+import { useEffect } from "react";
+import * as ScreenOrientation from "expo-screen-orientation";
+
 
 const Stack = createNativeStackNavigator();
 
 export default function App() {
+  useEffect(() => {
+    async function orientationChange() {
+      await ScreenOrientation.lockAsync(
+        ScreenOrientation.OrientationLock.PORTRAIT_UP
+      );
+    }
+    orientationChange();
+  }, []);
+
   return (
     <NavigationContainer>
       <Stack.Navigator>

@@ -19,7 +19,8 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.witblox.wifiClip"
+      "bundleIdentifier": "com.witblox.wifiClip",
+      "requireFullScreen": true
     },
     "android": {
       "adaptiveIcon": {

@@ -1,6 +1,6 @@
 import { StyleSheet, Platform, Dimensions } from 'react-native';
 
-const { height } = Dimensions.get("screen");
+const { height, width } = Dimensions.get("screen");
 
 export default StyleSheet.create({
     androidSafeArea: {
@@ -13,6 +13,6 @@ export default StyleSheet.create({
         right: 0,
         top: 0,
         bottom: 0,
-        height: height,
+        height: height > width ? height : width,
     },
 });
