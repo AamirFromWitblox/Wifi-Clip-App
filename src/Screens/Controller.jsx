@@ -1,13 +1,21 @@
 import GlobalStyles from "../GlobalStyles";
-import { TouchableOpacity, StyleSheet, Text, View, Button } from "react-native";
+import {
+	TouchableOpacity,
+	StyleSheet,
+	Text,
+	View,
+	Button,
+	ImageBackground,
+} from "react-native";
 import React, { useEffect, useRef, useState } from "react";
 import { LinearGradient } from "expo-linear-gradient";
 import LottieView from "lottie-react-native";
 import axios from "axios";
-// import Keypad from "../Components/Keypad";
 import * as ScreenOrientation from "expo-screen-orientation";
+import NotConnectedView from "../Components/NotConnectedView";
+import SportsMode from "../Components/SportsMode";
 
-const baseUrl = "https://192.168.4.1";
+const baseUrl = "http://192.168.4.1";
 const STANDARD_MODE = "standard";
 const SPORTS_MODE = "sports";
 
@@ -22,8 +30,8 @@ const Controller = ({ navigation, route }) => {
 	});
 	const [output1Status, setOutput1Status] = useState("off");
 	const [output2Status, setOutput2Status] = useState("off");
-	const [isStarted, setIsStarted] = useState(false);
-	const [currMode, setCurrMode] = useState(STANDARD_MODE);
+	// const [isStarted, setIsStarted] = useState(false);
+	const [currMode, setCurrMode] = useState(STANDARD_MODE); // standard or sports
 
 	useEffect(() => {
 		const source = axios.CancelToken.source();
@@ -41,7 +49,6 @@ const Controller = ({ navigation, route }) => {
 					});
 				})
 				.catch(() => {
-					setIsStarted(false);
 					setConnectionStatus({
 						initiated: true,
 						connected: false,
@@ -66,8 +73,8 @@ const Controller = ({ navigation, route }) => {
 	const handleOutputChange = (channelNum) => {
 		if (channelNum === 1) {
 			const status = output1Status === "on" ? "off" : "on";
-			setOutput1Status(status);
 			axios.get(baseUrl + "/LED_1/" + status);
+			setOutput1Status(status);
 		} else {
 			const status = output2Status === "on" ? "off" : "on";
 			axios.get(baseUrl + "/LED_2/" + status);
@@ -102,140 +109,163 @@ const Controller = ({ navigation, route }) => {
 	}
 
 	return (
-		<View style={{ ...styles.container }}>
-			<LinearGradient
-				colors={["#395278e3", "#263956"]}
-				style={GlobalStyles.background}
-			/>
-			<View style={{ flex: 1 }}>
-				<View style={{ marginTop: 20 }}>
-					{!connectionStatus.connected ? (
-						<LottieView
-							ref={animationRef}
-							source={require("../../assets/wifi-connecting.json")}
-							style={{
-								height: 200,
-								width: 200,
-								alignSelf: "center",
-							}}
-							loop
-							autoPlay
-						/>
-					) : (
-						<LottieView
-							source={require("../../assets/wifi-connected.json")}
-							style={{
-								height: 200,
-								width: 200,
-								alignSelf: "center",
-							}}
-						/>
-					)}
+		<ImageBackground
+			source={require("../../assets/sport-car.jpg")}
+			style={{ width: "100%", height: "100%" }}
+			imageStyle={{ opacity: currMode === SPORTS_MODE ? 1 : 0 }}
+			resizeMode="cover"
+		>
+			<View style={{ ...styles.container }}>
+				<LinearGradient
+					colors={["#395278e3", "#263956"]}
+					style={GlobalStyles.background}
+				/>
+				<View style={{ flex: 1 }}>
+					<View style={{ marginTop: 20 }}>
+						{connectionStatus.connected ? (
+							<>
+								{currMode === STANDARD_MODE && (
+									<LottieView
+										source={require("../../assets/wifi-connected.json")}
+										style={{
+											height: 200,
+											width: 200,
+											alignSelf: "center",
+										}}
+										autoPlay
+									/>
+								)}
+							</>
+						) : (
+							<LottieView
+								ref={animationRef}
+								source={require("../../assets/no-connection.json")}
+								style={{
+									height: 220,
+									width: 220,
+									alignSelf: "center",
+								}}
+								loop
+								autoPlay
+							/>
+						)}
 
-					<View style={styles.statusWrapper}>
-						<Text style={styles.status}>Status: </Text>
-						<Text
+						<View
 							style={{
-								color: connectionStatus.connecting
-									? "lightgray"
-									: connectionStatus.connected
-									? "#4DDA74"
-									: "orange",
+								...styles.statusWrapper,
+								marginTop: currMode === SPORTS_MODE ? 12 : 0,
 							}}
 						>
-							{connectionStatus.connecting
-								? "Establishing connection..."
-								: connectionStatus.connected
-								? "Connected"
-								: "Not Connected"}
-						</Text>
-					</View>
+							<Text style={styles.status}>Status: </Text>
+							<Text
+								style={{
+									color: connectionStatus.connected ? "#4DDA74" : "orange",
+								}}
+							>
+								{connectionStatus.connected ? "Connected" : "Not Connected"}
+							</Text>
+						</View>
 
-					{!isStarted && (
+						{/* {!isStarted && connectionStatus.connected && (
 						<TouchableOpacity
 							activeOpacity={0.5}
 							onPress={handleGetStarted}
 							style={{
 								...styles.connectBtn,
-								backgroundColor: connectionStatus.connected
-									? "#3490dc"
-									: "darkgray",
+								backgroundColor: "#3490dc",
 							}}
-							disabled={!connectionStatus.connected}
 						>
 							<Text style={{ color: "white", alignSelf: "center" }}>
 								Get Started
 							</Text>
 						</TouchableOpacity>
+					)} */}
+					</View>
+
+					{connectionStatus.connected && (
+						<>
+							{currMode === STANDARD_MODE ? (
+								<View style={styles.outputContainer}>
+									<View
+										style={{
+											padding: 5,
+											backgroundColor:
+												output1Status === "on" ? "#46cf76" : "lightgray",
+											marginRight: 10,
+											borderRadius: 10,
+										}}
+									>
+										<TouchableOpacity
+											style={styles.outputWrapper}
+											onPress={() => handleOutputChange(1)}
+											activeOpacity={0.8}
+										>
+											<Text style={styles.output}>Output 1</Text>
+											<View
+												style={{
+													...styles.led,
+													backgroundColor:
+														output1Status === "on" ? "#46cf76" : "lightgray",
+												}}
+											/>
+										</TouchableOpacity>
+									</View>
+									{channel === 2 && (
+										<View
+											style={{
+												padding: 5,
+												backgroundColor: "white",
+												borderRadius: 10,
+												backgroundColor:
+													output2Status === "on" ? "#46cf76" : "lightgray",
+											}}
+										>
+											<TouchableOpacity
+												style={styles.outputWrapper}
+												onPress={() => handleOutputChange(2)}
+												activeOpacity={0.8}
+											>
+												<Text style={styles.output}>Output 2</Text>
+												<View
+													style={{
+														...styles.led,
+														backgroundColor:
+															output2Status === "on" ? "#46cf76" : "lightgray",
+													}}
+												/>
+											</TouchableOpacity>
+										</View>
+									)}
+								</View>
+							) : (
+								<SportsMode />
+							)}
+						</>
 					)}
+
+					{!connectionStatus.connected && <NotConnectedView />}
 				</View>
 
-				{connectionStatus.connected && isStarted ? (
-					<View style={styles.outputContainer}>
-						<TouchableOpacity
-							style={styles.outputWrapper}
-							onPress={() => handleOutputChange(1)}
-							activeOpacity={0.8}
-						>
-							<Text style={styles.output}>Output 1</Text>
-							<View
-								style={{
-									...styles.led,
-									backgroundColor:
-										output1Status === "on" ? "#46cf76" : "lightgray",
-								}}
-							/>
-						</TouchableOpacity>
-						{channel === 2 && (
-							<TouchableOpacity
-								style={styles.outputWrapper}
-								onPress={() => handleOutputChange(2)}
-								activeOpacity={0.8}
-							>
-								<Text style={styles.output}>Output 2</Text>
-								<View
-									style={{
-										...styles.led,
-										backgroundColor:
-											output2Status === "on" ? "#46cf76" : "lightgray",
-									}}
-								/>
-							</TouchableOpacity>
-						)}
-					</View>
-				) : (
-					<>
+				{channel === 2 && connectionStatus.connected && (
+					<TouchableOpacity
+						onPress={changeScreenOrientation}
+						style={styles.modeBtn}
+					>
 						<Text
 							style={{
-								...styles.connectionText,
-								color: connectionStatus.failed ? "orange" : "white",
+								textTransform: "uppercase",
+								color: "white",
+								fontWeight: "bold",
+								fontSize: 16,
 							}}
 						>
-							{connectionStatus.failed &&
-								"Please connect your wifi with WiFi Clip"}
+							Switch to{" "}
+							{currMode === STANDARD_MODE ? SPORTS_MODE : STANDARD_MODE} mode
 						</Text>
-						<Text
-							style={{
-								...styles.connectionText,
-								color: connectionStatus.failed ? "orange" : "white",
-								marginTop: 0,
-							}}
-						>
-							{connectionStatus.failed &&
-								"Also make sure, your mobile data is off."}
-						</Text>
-					</>
+					</TouchableOpacity>
 				)}
 			</View>
-			<Button
-				title={`Switch to ${
-					currMode === STANDARD_MODE ? SPORTS_MODE : STANDARD_MODE
-				} mode`}
-				color="#395278e3"
-				onPress={changeScreenOrientation}
-			/>
-			{/* {connectionStatus.connected && isStarted && channel === 2 && <Keypad />} */}
-		</View>
+		</ImageBackground>
 	);
 };
 
@@ -272,7 +302,6 @@ const styles = StyleSheet.create({
 		justifyContent: "center",
 		alignItems: "center",
 		borderRadius: 10,
-		marginHorizontal: 10,
 	},
 	output: {
 		color: "white",
@@ -283,12 +312,9 @@ const styles = StyleSheet.create({
 		borderRadius: 10,
 		marginTop: 10,
 	},
-	connectionText: {
-		color: "lightgray",
-		alignSelf: "center",
-		marginTop: 30,
-		fontWeight: "bold",
-		textAlign: "center",
-		marginHorizontal: 40,
+	modeBtn: {
+		padding: 10,
+		backgroundColor: "#E8417E",
+		alignItems: "center",
 	},
 });
