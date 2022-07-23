@@ -33,38 +33,38 @@ const Controller = ({ navigation, route }) => {
 	// const [isStarted, setIsStarted] = useState(false);
 	const [currMode, setCurrMode] = useState(STANDARD_MODE); // standard or sports
 
-	useEffect(() => {
-		const source = axios.CancelToken.source();
-		const interval = setInterval(() => {
-			axios
-				.get(baseUrl, { timeout: 2000, cancelToken: source.token })
-				.then(() => {
-					if (animationRef.current) {
-						animationRef.current.reset();
-					}
-					setConnectionStatus({
-						initiated: true,
-						connected: true,
-						connecting: false,
-					});
-				})
-				.catch(() => {
-					setConnectionStatus({
-						initiated: true,
-						connected: false,
-						connecting: false,
-						failed: true,
-					});
-				});
-		}, 1000);
+	// useEffect(() => {
+	// 	const source = axios.CancelToken.source();
+	// 	const interval = setInterval(() => {
+	// 		axios
+	// 			.get(baseUrl, { timeout: 2000, cancelToken: source.token })
+	// 			.then(() => {
+	// 				if (animationRef.current) {
+	// 					animationRef.current.reset();
+	// 				}
+	// 				setConnectionStatus({
+	// 					initiated: true,
+	// 					connected: true,
+	// 					connecting: false,
+	// 				});
+	// 			})
+	// 			.catch(() => {
+	// 				setConnectionStatus({
+	// 					initiated: true,
+	// 					connected: false,
+	// 					connecting: false,
+	// 					failed: true,
+	// 				});
+	// 			});
+	// 	}, 1000);
 
-		return () => {
-			clearInterval(interval);
-			source.cancel("Cancelling in cleanup.");
-			setConnectionStatus({});
-			lockScreenOrientationPortrait();
-		};
-	}, []);
+	// 	return () => {
+	// 		clearInterval(interval);
+	// 		source.cancel("Cancelling in cleanup.");
+	// 		setConnectionStatus({});
+	// 		lockScreenOrientationPortrait();
+	// 	};
+	// }, []);
 
 	const handleGetStarted = () => {
 		setIsStarted(true);

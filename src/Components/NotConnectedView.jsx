@@ -1,39 +1,43 @@
-import { StyleSheet, Text } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 import React from "react";
 
 const ConnectionStatus = () => {
 	return (
-		<>
-			<Text
-				style={{
-					...styles.connectionText,
-					color: "orange",
-				}}
-			>
-				Please connect your wifi with WiFi Clip
-			</Text>
-			<Text
-				style={{
-					...styles.connectionText,
-					color: "orange",
-					marginTop: 0,
-				}}
-			>
-				Also make sure, your mobile data is turned off.
-			</Text>
-		</>
+		<View style={styles.container}>
+			<Text style={styles.title}>Steps to follow</Text>
+			<View>
+				<Text style={styles.text}>1. Turn on your Wifi Clip</Text>
+				<Text style={styles.text}>2. Go to wifi settings</Text>
+				<Text style={styles.text}>3. Select WiFiClip</Text>
+				<Text style={styles.text}>4. Enter the password</Text>
+				<Text style={styles.text}>5. Enjoy your ride {"😊"}</Text>
+			</View>
+		</View>
 	);
 };
 
 export default ConnectionStatus;
 
 const styles = StyleSheet.create({
-	connectionText: {
-		color: "lightgray",
-		alignSelf: "center",
-		marginTop: 30,
+	container: {
+		marginTop: 40,
+		borderWidth: 2,
+		borderColor: "#ccc",
+		alignItems: "center",
+		padding: 20,
+		borderRadius: 10,
+		marginHorizontal: 30,
+	},
+	title: {
+		fontSize: 24,
 		fontWeight: "bold",
-		textAlign: "center",
-		marginHorizontal: 40,
+		color: "white",
+		marginBottom: 10,
+		textDecorationLine: "underline",
+	},
+	text: {
+		fontSize: 16,
+		marginVertical: 4,
+		color: "#ccc",
 	},
 });
