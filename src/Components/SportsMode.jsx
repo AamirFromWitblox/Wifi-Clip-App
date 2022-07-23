@@ -1,4 +1,4 @@
-import { Image, StyleSheet, TouchableOpacity, View } from "react-native";
+import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import React from "react";
 import LottieView from "lottie-react-native";
 import axios from "axios";
@@ -23,7 +23,7 @@ const SportsMode = () => {
 
 			<View style={styles.controllerWrapper}>
 				<View style={styles.upControl}>
-					<Control endpoint="LED" />
+					<Control endpoint="LED" text={"Forward"} />
 				</View>
 				<View style={styles.leftRight}>
 					<Control
@@ -31,12 +31,14 @@ const SportsMode = () => {
 							transform: [{ rotate: "-90deg" }],
 						}}
 						endpoint="LED_2"
+						text={"Left"}
 					/>
 					<Control
 						style={{
 							transform: [{ rotate: "90deg" }],
 						}}
 						endpoint="LED_1"
+						text={"Right"}
 					/>
 				</View>
 			</View>
@@ -44,7 +46,7 @@ const SportsMode = () => {
 	);
 };
 
-const Control = ({ style, endpoint }) => {
+const Control = ({ style, endpoint, text }) => {
 	const onHold = () => {
 		const url = `${baseUrl}/${endpoint}/on`;
 		axios.get(url);
@@ -56,14 +58,17 @@ const Control = ({ style, endpoint }) => {
 	};
 
 	return (
-		<TouchableOpacity
-			activeOpacity={0.3}
-			style={{ ...styles.control, ...style }}
-			onPressIn={onHold}
-			onPressOut={onHoldLeave}
-		>
-			<Image style={styles.arrow} source={require("../../assets/up.png")} />
-		</TouchableOpacity>
+		<View>
+			<Text style={{ textAlign: "center", color: "white" }}>{text}</Text>
+			<TouchableOpacity
+				activeOpacity={0.3}
+				style={{ ...styles.control, ...style }}
+				onPressIn={onHold}
+				onPressOut={onHoldLeave}
+			>
+				<Image style={styles.arrow} source={require("../../assets/up.png")} />
+			</TouchableOpacity>
+		</View>
 	);
 };
 
