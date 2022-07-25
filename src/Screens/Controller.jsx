@@ -30,7 +30,6 @@ const Controller = ({ navigation, route }) => {
 	});
 	const [output1Status, setOutput1Status] = useState("off");
 	const [output2Status, setOutput2Status] = useState("off");
-	// const [isStarted, setIsStarted] = useState(false);
 	const [currMode, setCurrMode] = useState(STANDARD_MODE); // standard or sports
 
 	useEffect(() => {
@@ -65,10 +64,6 @@ const Controller = ({ navigation, route }) => {
 			lockScreenOrientationPortrait();
 		};
 	}, []);
-
-	const handleGetStarted = () => {
-		setIsStarted(true);
-	};
 
 	const handleOutputChange = (channelNum) => {
 		if (channelNum === 1) {
@@ -165,21 +160,6 @@ const Controller = ({ navigation, route }) => {
 								{connectionStatus.connected ? "Connected" : "Not Connected"}
 							</Text>
 						</View>
-
-						{/* {!isStarted && connectionStatus.connected && (
-						<TouchableOpacity
-							activeOpacity={0.5}
-							onPress={handleGetStarted}
-							style={{
-								...styles.connectBtn,
-								backgroundColor: "#3490dc",
-							}}
-						>
-							<Text style={{ color: "white", alignSelf: "center" }}>
-								Get Started
-							</Text>
-						</TouchableOpacity>
-					)} */}
 					</View>
 
 					{connectionStatus.connected && (
