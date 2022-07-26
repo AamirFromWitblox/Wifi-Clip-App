@@ -4,8 +4,8 @@ import {
 	StyleSheet,
 	Text,
 	View,
-	Button,
 	ImageBackground,
+	BackHandler,
 } from "react-native";
 import React, { useEffect, useRef, useState } from "react";
 import { LinearGradient } from "expo-linear-gradient";
@@ -64,6 +64,26 @@ const Controller = ({ navigation, route }) => {
 			lockScreenOrientationPortrait();
 		};
 	}, []);
+
+	useEffect(() => {
+		// Not go back when in sports mode
+		// Instead switch to standard mode
+
+		const handleBackPress = () => {
+			if (currMode === STANDARD_MODE) return false;
+
+			setCurrMode(STANDARD_MODE);
+			navigation.setOptions({ headerShown: true });
+			lockScreenOrientationPortrait();
+			return true;
+		};
+
+		const backhandler = BackHandler.addEventListener(
+			"hardwareBackPress",
+			handleBackPress
+		);
+		return () => backhandler.remove();
+	}, [currMode]);
 
 	const handleOutputChange = (channelNum) => {
 		if (channelNum === 1) {

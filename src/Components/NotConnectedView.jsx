@@ -10,7 +10,8 @@ const ConnectionStatus = () => {
 				<Text style={styles.text}>2. Go to wifi settings</Text>
 				<Text style={styles.text}>3. Select WiFiClip</Text>
 				<Text style={styles.text}>4. Enter the password</Text>
-				<Text style={styles.text}>5. Enjoy your ride {"😊"}</Text>
+				<Text style={styles.text}>5. Turn off mobile data if its on</Text>
+				<Text style={styles.text}>6. Enjoy your ride {"😊"}</Text>
 			</View>
 		</View>
 	);
