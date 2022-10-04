@@ -23,9 +23,9 @@ const Home = ({ navigation }) => {
 						onPress={() => navigation.navigate("controller", { channel: 1 })}
 					>
 						<Image
-							source={require("../../assets/wificlip.png")}
-							resizeMode="cover"
-							style={{ ...styles.bloxImage }}
+							source={require("../../assets/CLIP1-DIGITAL.png")}
+							resizeMode="contain"
+							style={ styles.bloxImage }
 						/>
 						<Text style={{ color: "white", alignSelf: "center" }}>
 							Single Channel
@@ -36,8 +36,8 @@ const Home = ({ navigation }) => {
 						onPress={() => navigation.navigate("controller", { channel: 2 })}
 					>
 						<Image
-							source={require("../../assets/wificlip2.png")}
-							resizeMode="cover"
+							source={require("../../assets/CLIP-DIGITAL.png")}
+							resizeMode="contain"
 							style={styles.bloxImage}
 						/>
 						<Text style={{ color: "white", alignSelf: "center" }}>
@@ -89,15 +89,21 @@ const styles = StyleSheet.create({
 		justifyContent: "center",
 	},
 	imageContainer: {
+		minWidth:300,
 		padding: 20,
 		borderRadius: 10,
 		backgroundColor: "#6984ad82",
 		marginHorizontal: 40,
 		marginVertical: 10,
 	},
+	optionContainer:{
+		flex:1,
+		alignItems:"center",
+		justifyContent:"center"
+	},
 	bloxImage: {
-		width: 200,
-		height: 200,
+		width: 100,
+		minHeight:100,
 		alignSelf: "center",
 	},
 });
