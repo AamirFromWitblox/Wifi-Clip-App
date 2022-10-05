@@ -2,7 +2,7 @@
   "expo": {
     "name": "Wifi Clip",
     "slug": "witblox_wifi_clip",
-    "version": "2.0.0",
+    "version": "2.1.0",
     "jsEngine": "hermes",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -29,10 +29,15 @@
         "backgroundColor": "#FFFFFF"
       },
       "package": "com.witblox.wifi_clip",
-      "versionCode": 3
+      "versionCode": 4
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "bae0a76c-2c15-4bd7-af1e-ce116572f7b7"
+      }
     }
   }
 }
