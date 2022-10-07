@@ -1,43 +1,41 @@
 {
-  "expo": {
-    "name": "Wifi Clip",
-    "slug": "witblox_wifi_clip",
-    "version": "2.1.0",
-    "jsEngine": "hermes",
-    "orientation": "portrait",
-    "icon": "./assets/icon.png",
-    "userInterfaceStyle": "light",
-    "splash": {
-      "image": "./assets/splash2.png",
-      "resizeMode": "cover",
-      "backgroundColor": "#ffffff"
-    },
-    "updates": {
-      "fallbackToCacheTimeout": 0
-    },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
-    "ios": {
-      "supportsTablet": true,
-      "bundleIdentifier": "com.witblox.wifiClip",
-      "requireFullScreen": true
-    },
-    "android": {
-      "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-iconV2.png",
-        "backgroundColor": "#FFFFFF"
-      },
-      "package": "com.witblox.wifi_clip",
-      "versionCode": 4
-    },
-    "web": {
-      "favicon": "./assets/favicon.png"
-    },
-    "extra": {
-      "eas": {
-        "projectId": "bae0a76c-2c15-4bd7-af1e-ce116572f7b7"
-      }
-    }
-  }
+	"expo": {
+		"name": "Wifi Clip",
+		"slug": "witblox_wifi_clip",
+		"version": "2.1.0",
+		"jsEngine": "hermes",
+		"orientation": "portrait",
+		"icon": "./assets/icon.png",
+		"userInterfaceStyle": "light",
+		"splash": {
+			"image": "./assets/splash.png",
+			"resizeMode": "cover",
+			"backgroundColor": "#ffffff"
+		},
+		"updates": {
+			"fallbackToCacheTimeout": 0
+		},
+		"assetBundlePatterns": ["**/*"],
+		"ios": {
+			"supportsTablet": true,
+			"bundleIdentifier": "com.witblox.wifiClip",
+			"requireFullScreen": true
+		},
+		"android": {
+			"adaptiveIcon": {
+				"foregroundImage": "./assets/adaptive-icon.png",
+				"backgroundColor": "#FFFFFF"
+			},
+			"package": "com.witblox.wifi_clip",
+			"versionCode": 4
+		},
+		"web": {
+			"favicon": "./assets/favicon.png"
+		},
+		"extra": {
+			"eas": {
+				"projectId": "bae0a76c-2c15-4bd7-af1e-ce116572f7b7"
+			}
+		}
+	}
 }
