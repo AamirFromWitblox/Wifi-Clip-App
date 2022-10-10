@@ -25,7 +25,7 @@ const Home = ({ navigation }) => {
 						<Image
 							source={require("../../assets/CLIP1-DIGITAL.png")}
 							resizeMode="contain"
-							style={ styles.bloxImage }
+							style={styles.bloxImage}
 						/>
 						<Text style={{ color: "white", alignSelf: "center" }}>
 							Single Channel
@@ -89,21 +89,21 @@ const styles = StyleSheet.create({
 		justifyContent: "center",
 	},
 	imageContainer: {
-		minWidth:300,
+		minWidth: 300,
 		padding: 20,
 		borderRadius: 10,
 		backgroundColor: "#6984ad82",
 		marginHorizontal: 40,
 		marginVertical: 10,
 	},
-	optionContainer:{
-		flex:1,
-		alignItems:"center",
-		justifyContent:"center"
+	optionContainer: {
+		flex: 1,
+		alignItems: "center",
+		justifyContent: "center",
 	},
 	bloxImage: {
-		width: 100,
-		minHeight:100,
+		width: 150,
+		height: 150,
 		alignSelf: "center",
 	},
 });
