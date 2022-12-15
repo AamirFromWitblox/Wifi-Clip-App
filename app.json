@@ -2,7 +2,7 @@
 	"expo": {
 		"name": "Wifi Clip",
 		"slug": "witblox_wifi_clip",
-		"version": "2.2.0",
+		"version": "2.3.0",
 		"jsEngine": "hermes",
 		"orientation": "portrait",
 		"icon": "./assets/icon.png",
