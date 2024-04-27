@@ -14,6 +14,7 @@ import axios from "axios";
 import * as ScreenOrientation from "expo-screen-orientation";
 import NotConnectedView from "../Components/NotConnectedView";
 import SportsMode from "../Components/SportsMode";
+import SpeechMode from "../Components/SpeechMode";
 
 const baseUrl = "http://192.168.4.1";
 const STANDARD_MODE = "standard";
@@ -143,6 +144,10 @@ const Controller = ({ navigation, route }) => {
 				/>
 				<View style={{ flex: 1 }}>
 					<View style={{ marginTop: 20 }}>
+						<View style={styles.speechMode}>
+							<SpeechMode />
+						</View>
+
 						{connectionStatus.connected ? (
 							<>
 								{currMode === STANDARD_MODE && (
@@ -322,5 +327,10 @@ const styles = StyleSheet.create({
 		padding: 10,
 		backgroundColor: "#E8417E",
 		alignItems: "center",
+	},
+	speechMode: {
+		position: "absolute",
+		top: 10,
+		right: 10,
 	},
 });
