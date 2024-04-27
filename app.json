@@ -2,7 +2,7 @@
 	"expo": {
 		"name": "Wifi Clip",
 		"slug": "witblox_wifi_clip",
-		"version": "2.2.0",
+		"version": "2.2.1",
 		"jsEngine": "hermes",
 		"orientation": "portrait",
 		"icon": "./assets/icon.png",
@@ -15,9 +15,7 @@
 		"updates": {
 			"fallbackToCacheTimeout": 0
 		},
-		"assetBundlePatterns": [
-			"**/*"
-		],
+		"assetBundlePatterns": ["**/*"],
 		"ios": {
 			"supportsTablet": true,
 			"bundleIdentifier": "com.witblox.wifiClip",
@@ -30,7 +28,7 @@
 				"backgroundColor": "#FFFFFF"
 			},
 			"package": "com.witblox.wifi_clip",
-			"versionCode": 5
+			"versionCode": 6
 		},
 		"web": {
 			"favicon": "./assets/favicon.png"

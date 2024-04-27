@@ -34,31 +34,37 @@ const Controller = ({ navigation, route }) => {
 
 	useEffect(() => {
 		const source = axios.CancelToken.source();
-		const interval = setInterval(() => {
-			axios
-				.get(baseUrl, { timeout: 2000, cancelToken: source.token })
-				.then(() => {
-					if (animationRef.current) {
-						animationRef.current.reset();
-					}
-					setConnectionStatus({
-						initiated: true,
-						connected: true,
-						connecting: false,
-					});
-				})
-				.catch(() => {
-					setConnectionStatus({
-						initiated: true,
-						connected: false,
-						connecting: false,
-						failed: true,
-					});
-				});
-		}, 1000);
+		// const interval = setInterval(() => {
+		// 	axios
+		// 		.get(baseUrl, { timeout: 2000, cancelToken: source.token })
+		// 		.then(() => {
+		// 			if (animationRef.current) {
+		// 				animationRef.current.reset();
+		// 			}
+		// 			setConnectionStatus({
+		// 				initiated: true,
+		// 				connected: true,
+		// 				connecting: false,
+		// 			});
+		// 		})
+		// 		.catch(() => {
+		// 			setConnectionStatus({
+		// 				initiated: true,
+		// 				connected: false,
+		// 				connecting: false,
+		// 				failed: true,
+		// 			});
+		// 		});
+		// }, 1000);
+
+		setConnectionStatus({
+			initiated: true,
+			connected: true,
+			connecting: false,
+		});
 
 		return () => {
-			clearInterval(interval);
+			// clearInterval(interval);
 			source.cancel("Cancelling in cleanup.");
 			setConnectionStatus({});
 			lockScreenOrientationPortrait();
