@@ -71,10 +71,6 @@ const SpeechMode = () => {
 
 	return (
 		<View>
-			{/* <Button title="Start" onPress={Voice.start} /> */}
-			<TouchableOpacity onPress={requestAudioPermission}>
-				<FontAwesome6 name="microphone-slash" size={24} color="#ccc" />
-			</TouchableOpacity>
 			<TouchableOpacity onPress={Voice.start}>
 				<FontAwesome6 name="microphone" size={24} color="#ccc" />
 			</TouchableOpacity>
