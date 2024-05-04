@@ -17,7 +17,6 @@ import SportsMode from "../Components/SportsMode";
 import SpeechMode from "../Components/SpeechMode";
 
 const baseUrl = "http://192.168.4.1";
-// const baseUrl = "https://itzaamir.in";
 const STANDARD_MODE = "standard";
 const SPORTS_MODE = "sports";
 

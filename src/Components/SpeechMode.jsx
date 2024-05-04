@@ -3,7 +3,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { FontAwesome6 } from "@expo/vector-icons";
 import Vosk from "react-native-vosk";
 
-const actions = ["left", "right", "forward", "stop", "shut down"];
+const actions = ["left", "right", "forward", "stop"];
 
 const SpeechMode = ({ onSpeechResults }) => {
 	const [isReady, setIsReady] = useState(false);
