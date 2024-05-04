@@ -17,6 +17,7 @@ import SportsMode from "../Components/SportsMode";
 import SpeechMode from "../Components/SpeechMode";
 
 const baseUrl = "http://192.168.4.1";
+// const baseUrl = "https://itzaamir.in";
 const STANDARD_MODE = "standard";
 const SPORTS_MODE = "sports";
 
@@ -35,37 +36,31 @@ const Controller = ({ navigation, route }) => {
 
 	useEffect(() => {
 		const source = axios.CancelToken.source();
-		// const interval = setInterval(() => {
-		// 	axios
-		// 		.get(baseUrl, { timeout: 2000, cancelToken: source.token })
-		// 		.then(() => {
-		// 			if (animationRef.current) {
-		// 				animationRef.current.reset();
-		// 			}
-		// 			setConnectionStatus({
-		// 				initiated: true,
-		// 				connected: true,
-		// 				connecting: false,
-		// 			});
-		// 		})
-		// 		.catch(() => {
-		// 			setConnectionStatus({
-		// 				initiated: true,
-		// 				connected: false,
-		// 				connecting: false,
-		// 				failed: true,
-		// 			});
-		// 		});
-		// }, 1000);
-
-		setConnectionStatus({
-			initiated: true,
-			connected: true,
-			connecting: false,
-		});
+		const interval = setInterval(() => {
+			axios
+				.get(baseUrl, { timeout: 2000, cancelToken: source.token })
+				.then(() => {
+					if (animationRef.current) {
+						animationRef.current.reset();
+					}
+					setConnectionStatus({
+						initiated: true,
+						connected: true,
+						connecting: false,
+					});
+				})
+				.catch(() => {
+					setConnectionStatus({
+						initiated: true,
+						connected: false,
+						connecting: false,
+						failed: true,
+					});
+				});
+		}, 1000);
 
 		return () => {
-			// clearInterval(interval);
+			clearInterval(interval);
 			source.cancel("Cancelling in cleanup.");
 			setConnectionStatus({});
 			lockScreenOrientationPortrait();
@@ -130,6 +125,44 @@ const Controller = ({ navigation, route }) => {
 		);
 	}
 
+	const onSpeechResults = (speech) => {
+		switch (speech.toLowerCase()) {
+			case "forward":
+				setOutput1Status("on");
+				setOutput2Status("on");
+				handleAction("/LED/on");
+				break;
+
+			case "left":
+				setOutput1Status("off");
+				setOutput2Status("on");
+				handleAction("/LED_2/on");
+				handleAction("/LED_1/off");
+				break;
+
+			case "right":
+				setOutput1Status("on");
+				setOutput2Status("off");
+				handleAction("/LED_1/on");
+				handleAction("/LED_2/off");
+				break;
+
+			case "stop":
+				setOutput1Status("off");
+				setOutput2Status("off");
+				handleAction("/LED/off");
+				break;
+
+			default:
+				break;
+		}
+	};
+
+	const handleAction = (action) => {
+		const url = `${baseUrl}/${action}`;
+		axios.get(url);
+	};
+
 	return (
 		<ImageBackground
 			source={require("../../assets/sport-car.jpg")}
@@ -144,9 +177,11 @@ const Controller = ({ navigation, route }) => {
 				/>
 				<View style={{ flex: 1 }}>
 					<View style={{ marginTop: 20 }}>
-						<View style={styles.speechMode}>
-							<SpeechMode />
-						</View>
+						{connectionStatus.connected && (
+							<View style={styles.speechMode}>
+								<SpeechMode onSpeechResults={onSpeechResults} />
+							</View>
+						)}
 
 						{connectionStatus.connected ? (
 							<>

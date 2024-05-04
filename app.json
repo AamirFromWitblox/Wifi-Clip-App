@@ -2,7 +2,7 @@
 	"expo": {
 		"name": "Wifi Clip Controller",
 		"slug": "witblox_wifi_clip",
-		"version": "2.3.0",
+		"version": "2.4.0",
 		"jsEngine": "hermes",
 		"orientation": "portrait",
 		"icon": "./assets/icon.png",
@@ -37,7 +37,6 @@
 			"eas": {
 				"projectId": "bae0a76c-2c15-4bd7-af1e-ce116572f7b7"
 			}
-		},
-		"plugins": [["@react-native-voice/voice"]]
+		}
 	}
 }

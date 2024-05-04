@@ -1,78 +1,78 @@
-import {
-	View,
-	Text,
-	Button,
-	TouchableOpacity,
-	PermissionsAndroid,
-} from "react-native";
-import React, { useEffect } from "react";
-import Voice from "@react-native-voice/voice";
+import { View, TouchableOpacity } from "react-native";
+import React, { useEffect, useRef, useState } from "react";
 import { FontAwesome6 } from "@expo/vector-icons";
+import Vosk from "react-native-vosk";
 
-const SpeechMode = () => {
+const actions = ["left", "right", "forward", "stop", "shut down"];
+
+const SpeechMode = ({ onSpeechResults }) => {
+	const [isReady, setIsReady] = useState(false);
+	const [isListening, setIsListening] = useState(false);
+
+	const vosk = useRef(new Vosk()).current;
+
 	useEffect(() => {
-		Voice.onSpeechStart = onSpeechStart;
-		Voice.onSpeechEnd = onSpeechEnd;
-		Voice.onSpeechResults = onSpeechResults;
-		Voice.onSpeechError = onSpeechError;
-		Voice.onSpeechPartialResults = onSpeechPartialResults;
-		Voice.onSpeechVolumeChanged = onSpeechVolumeChanged;
+		vosk
+			.loadModel("model-en")
+			.then(() => {
+				setIsReady(true);
+			})
+			.catch((error) => {
+				console.error(error);
+			});
+
+		const resultEvent = vosk.onResult((res) => {
+			console.log("onResult " + res);
+			onSpeechResults(res.split(" ")[0]);
+			// setResult(res);
+		});
+
+		const errorEvent = vosk.onError((e) => {
+			console.error(e);
+		});
+
+		const timeoutEvent = vosk.onTimeout(() => {
+			console.log("Recognizer timed out");
+			// setRecognizing(false);
+		});
 
 		return () => {
-			Voice.destroy().then(Voice.removeAllListeners);
+			resultEvent.remove();
+			errorEvent.remove();
+			timeoutEvent.remove();
 		};
-	}, []);
+	}, [vosk]);
 
-	const onSpeechStart = (e) => {
-		console.log("onSpeechStart: ", e);
-	};
+	const handleSpeechStart = () => {
+		if (!isReady) return;
 
-	const onSpeechEnd = (e) => {
-		console.log("onSpeechEnd: ", e);
-	};
-
-	const onSpeechResults = (e) => {
-		console.log("onSpeechResults: ", e);
-	};
-
-	const onSpeechError = (e) => {
-		console.log("onSpeechError: ", e);
-	};
-
-	const onSpeechPartialResults = (e) => {
-		console.log("onSpeechPartialResults: ", e);
-	};
-
-	const onSpeechVolumeChanged = (e) => {
-		console.log("onSpeechVolumeChanged: ", e);
-	};
-
-	const requestAudioPermission = async () => {
-		try {
-			const granted = await PermissionsAndroid.request(
-				PermissionsAndroid.PERMISSIONS.RECORD_AUDIO,
-				{
-					title: "Audio Permission",
-					message: "This app requires audio permission",
-					buttonNeutral: "Ask Me Later",
-					buttonNegative: "Cancel",
-					buttonPositive: "OK",
-				}
-			);
-			if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-				console.log("You can use the audio");
-			} else {
-				console.log("Audio permission denied");
-			}
-		} catch (err) {
-			console.warn(err);
+		if (isListening) {
+			vosk.stop();
+			setIsListening(false);
+			return;
 		}
+
+		vosk
+			.start({
+				grammar: actions,
+			})
+			.then((result) => {
+				console.log({ result });
+				setIsListening(true);
+			})
+			.catch((error) => {
+				console.error(error);
+			});
 	};
 
 	return (
 		<View>
-			<TouchableOpacity onPress={Voice.start}>
-				<FontAwesome6 name="microphone" size={24} color="#ccc" />
+			<TouchableOpacity onPress={handleSpeechStart}>
+				<FontAwesome6
+					name="microphone"
+					size={24}
+					color={isListening ? "#46cf76" : "#ccc"}
+				/>
 			</TouchableOpacity>
 		</View>
 	);
