@@ -2,7 +2,7 @@
 	"expo": {
 		"name": "Wifi Clip Controller",
 		"slug": "witblox_wifi_clip",
-		"version": "2.5.0",
+		"version": "2.5.1",
 		"jsEngine": "hermes",
 		"orientation": "portrait",
 		"icon": "./assets/icon.png",
@@ -28,7 +28,7 @@
 				"backgroundColor": "#FFFFFF"
 			},
 			"package": "com.witblox.wifi_clip",
-			"versionCode": 6
+			"versionCode": 251
 		},
 		"web": {
 			"favicon": "./assets/favicon.png"
@@ -43,7 +43,7 @@
 				"expo-build-properties",
 				{
 					"android": {
-						"usesClearTextTraffic": true
+						"usesCleartextTraffic": true
 					}
 				}
 			]
