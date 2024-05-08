@@ -1,8 +1,9 @@
 import { StyleSheet, Text, View } from "react-native";
 import React from "react";
 import { FontAwesome6 } from "@expo/vector-icons";
+import { COLORS } from "../../utils/constants";
 
-const SpeechModeActions = () => {
+const SpeechModeActions = ({ activeCommand }) => {
 	return (
 		<View style={styles.container}>
 			<View
@@ -21,12 +22,18 @@ const SpeechModeActions = () => {
 						fontWeight: "500",
 					}}
 				>
-					Say these commands
+					Commands
 				</Text>
 			</View>
 
 			<View style={{ flexDirection: "row" }}>
-				<View style={styles.commandContainer}>
+				<View
+					style={{
+						...styles.commandContainer,
+						backgroundColor:
+							activeCommand === "forward" ? COLORS.darkGreen : "white",
+					}}
+				>
 					<FontAwesome6 name="caret-up" size={20} color="black" />
 					<Text style={{ fontSize: 18 }}>Forward</Text>
 				</View>
@@ -40,13 +47,31 @@ const SpeechModeActions = () => {
 					gap: 10,
 				}}
 			>
-				<View style={styles.commandContainer}>
+				<View
+					style={{
+						...styles.commandContainer,
+						flexDirection: "row",
+						gap: 10,
+						justifyContent: "center",
+						backgroundColor:
+							activeCommand === "left" ? COLORS.darkGreen : "white",
+					}}
+				>
 					<FontAwesome6 name="caret-left" size={20} color="black" />
 					<Text style={{ fontSize: 18 }}>Left</Text>
 				</View>
-				<View style={styles.commandContainer}>
-					<FontAwesome6 name="caret-right" size={20} color="black" />
+				<View
+					style={{
+						...styles.commandContainer,
+						backgroundColor:
+							activeCommand === "right" ? COLORS.darkGreen : "white",
+						flexDirection: "row",
+						gap: 10,
+						justifyContent: "center",
+					}}
+				>
 					<Text style={{ fontSize: 18 }}>Right</Text>
+					<FontAwesome6 name="caret-right" size={20} color="black" />
 				</View>
 			</View>
 
@@ -57,6 +82,8 @@ const SpeechModeActions = () => {
 						flexDirection: "row",
 						justifyContent: "center",
 						gap: 10,
+						backgroundColor:
+							activeCommand === "stop" ? COLORS.darkGreen : "white",
 					}}
 				>
 					<Text style={{ fontSize: 18 }}>Stop</Text>
@@ -75,7 +102,7 @@ const styles = StyleSheet.create({
 		paddingHorizontal: 20,
 		backgroundColor: "lightgray",
 		borderRadius: 5,
-		width: 250,
+		width: 300,
 	},
 	commandContainer: {
 		flex: 1,

@@ -38,6 +38,7 @@ const Controller = ({ navigation, route }) => {
 	// For Speech Recognition
 	const [isSrModelReady, setIsSrModelReady] = useState(false);
 	const [isRecognizing, setIsRecognizing] = useState(false);
+	const [activeCommand, setActiveCommand] = useState("");
 
 	const vosk = useRef(new Vosk()).current;
 
@@ -167,12 +168,14 @@ const Controller = ({ navigation, route }) => {
 	const onSpeechResults = (speech) => {
 		switch (speech.toLowerCase()) {
 			case "forward":
+				setActiveCommand("forward");
 				setOutput1Status("on");
 				setOutput2Status("on");
 				handleAction("/LED/on");
 				break;
 
 			case "left":
+				setActiveCommand("left");
 				setOutput1Status("off");
 				setOutput2Status("on");
 				handleAction("/LED_2/on");
@@ -180,6 +183,7 @@ const Controller = ({ navigation, route }) => {
 				break;
 
 			case "right":
+				setActiveCommand("right");
 				setOutput1Status("on");
 				setOutput2Status("off");
 				handleAction("/LED_1/on");
@@ -187,6 +191,7 @@ const Controller = ({ navigation, route }) => {
 				break;
 
 			case "stop":
+				setActiveCommand("stop");
 				setOutput1Status("off");
 				setOutput2Status("off");
 				handleAction("/LED/off");
@@ -308,7 +313,7 @@ const Controller = ({ navigation, route }) => {
 								<>
 									<View style={styles.outputContainer}>
 										{isRecognizing ? (
-											<SpeechModeActions />
+											<SpeechModeActions activeCommand={activeCommand} />
 										) : (
 											<View
 												style={{
