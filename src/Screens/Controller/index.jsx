@@ -218,7 +218,7 @@ const Controller = ({ navigation, route }) => {
 
 		vosk
 			.start({
-				grammar: actions,
+				grammar: [...actions, "[unk]"],
 			})
 			.then((result) => {
 				console.log({ result });
