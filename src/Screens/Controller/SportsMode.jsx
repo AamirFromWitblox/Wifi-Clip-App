@@ -2,15 +2,14 @@ import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import React from "react";
 import LottieView from "lottie-react-native";
 import axios from "axios";
-
-const baseUrl = "http://192.168.4.1";
+import { baseUrl } from "../../utils/constants";
 
 const SportsMode = () => {
 	return (
 		<View style={{ flex: 1 }}>
 			<View style={{ flex: 1 }}>
 				<LottieView
-					source={require("../../assets/driving-car.json")}
+					source={require("../../../assets/driving-car.json")}
 					style={{
 						height: 150,
 						width: 150,
@@ -66,7 +65,10 @@ const Control = ({ style, endpoint, text }) => {
 				onPressIn={onHold}
 				onPressOut={onHoldLeave}
 			>
-				<Image style={styles.arrow} source={require("../../assets/up.png")} />
+				<Image
+					style={styles.arrow}
+					source={require("../../../assets/up.png")}
+				/>
 			</TouchableOpacity>
 		</View>
 	);

@@ -1,4 +1,4 @@
-import GlobalStyles from "../GlobalStyles";
+import GlobalStyles from "../../GlobalStyles";
 import {
 	TouchableOpacity,
 	StyleSheet,
@@ -12,11 +12,13 @@ import { LinearGradient } from "expo-linear-gradient";
 import LottieView from "lottie-react-native";
 import axios from "axios";
 import * as ScreenOrientation from "expo-screen-orientation";
-import NotConnectedView from "../Components/NotConnectedView";
-import SportsMode from "../Components/SportsMode";
-import SpeechMode from "../Components/SpeechMode";
+import NotConnectedView from "../../Components/NotConnectedView";
+import SportsMode from "./SportsMode";
+import { COLORS, actions, baseUrl } from "../../utils/constants";
+import Vosk from "react-native-vosk";
+import { FontAwesome6 } from "@expo/vector-icons";
+import SpeechModeActions from "./SpeechModeActions";
 
-const baseUrl = "http://192.168.4.1";
 const STANDARD_MODE = "standard";
 const SPORTS_MODE = "sports";
 
@@ -32,6 +34,12 @@ const Controller = ({ navigation, route }) => {
 	const [output1Status, setOutput1Status] = useState("off");
 	const [output2Status, setOutput2Status] = useState("off");
 	const [currMode, setCurrMode] = useState(STANDARD_MODE); // standard or sports
+
+	// For Speech Recognition
+	const [isSrModelReady, setIsSrModelReady] = useState(false);
+	const [isRecognizing, setIsRecognizing] = useState(false);
+
+	const vosk = useRef(new Vosk()).current;
 
 	useEffect(() => {
 		const source = axios.CancelToken.source();
@@ -85,6 +93,38 @@ const Controller = ({ navigation, route }) => {
 		);
 		return () => backhandler.remove();
 	}, [currMode]);
+
+	useEffect(() => {
+		vosk
+			.loadModel("model-en")
+			.then(() => {
+				setIsSrModelReady(true);
+			})
+			.catch((error) => {
+				console.error(error);
+			});
+
+		const resultEvent = vosk.onResult((res) => {
+			console.log("onResult " + res);
+			onSpeechResults(res.split(" ")[0]);
+			// setResult(res);
+		});
+
+		const errorEvent = vosk.onError((e) => {
+			console.error(e);
+		});
+
+		const timeoutEvent = vosk.onTimeout(() => {
+			console.log("Recognizer timed out");
+			// setRecognizing(false);
+		});
+
+		return () => {
+			resultEvent.remove();
+			errorEvent.remove();
+			timeoutEvent.remove();
+		};
+	}, [vosk]);
 
 	const handleOutputChange = (channelNum) => {
 		if (channelNum === 1) {
@@ -162,31 +202,62 @@ const Controller = ({ navigation, route }) => {
 		axios.get(url);
 	};
 
+	const handleSpeechStart = () => {
+		if (!isSrModelReady) return;
+
+		if (isRecognizing) {
+			vosk.stop();
+			setIsRecognizing(false);
+			return;
+		}
+
+		vosk
+			.start({
+				grammar: actions,
+			})
+			.then((result) => {
+				console.log({ result });
+				setIsRecognizing(true);
+			})
+			.catch((error) => {
+				console.error(error);
+			});
+	};
+
 	return (
 		<ImageBackground
-			source={require("../../assets/sport-car.jpg")}
+			source={require("../../../assets/sport-car.jpg")}
 			style={{ width: "100%", height: "100%" }}
 			imageStyle={{ opacity: currMode === SPORTS_MODE ? 1 : 0 }}
 			resizeMode="cover"
 		>
 			<View style={{ ...styles.container }}>
 				<LinearGradient
-					colors={["#395278e3", "#263956"]}
+					colors={[COLORS.lightSlate, COLORS.slate]}
 					style={GlobalStyles.background}
 				/>
 				<View style={{ flex: 1 }}>
 					<View style={{ marginTop: 20 }}>
 						{connectionStatus.connected && (
 							<View style={styles.speechMode}>
-								<SpeechMode onSpeechResults={onSpeechResults} />
+								<View>
+									<TouchableOpacity onPress={handleSpeechStart}>
+										<FontAwesome6
+											name="microphone"
+											size={24}
+											color={isRecognizing ? COLORS.lightGreen : "#ccc"}
+										/>
+									</TouchableOpacity>
+								</View>
 							</View>
 						)}
 
+						{/* Status GIF */}
 						{connectionStatus.connected ? (
 							<>
 								{currMode === STANDARD_MODE && (
 									<LottieView
-										source={require("../../assets/wifi-connected.json")}
+										source={require("../../../assets/wifi-connected.json")}
 										style={{
 											height: 200,
 											width: 200,
@@ -199,7 +270,7 @@ const Controller = ({ navigation, route }) => {
 						) : (
 							<LottieView
 								ref={animationRef}
-								source={require("../../assets/no-connection.json")}
+								source={require("../../../assets/no-connection.json")}
 								style={{
 									height: 220,
 									width: 220,
@@ -219,78 +290,98 @@ const Controller = ({ navigation, route }) => {
 							<Text style={styles.status}>Status: </Text>
 							<Text
 								style={{
-									color: connectionStatus.connected ? "#4DDA74" : "orange",
+									color: connectionStatus.connected
+										? COLORS.darkGreen
+										: "orange",
 								}}
 							>
 								{connectionStatus.connected ? "Connected" : "Not Connected"}
 							</Text>
 						</View>
 					</View>
+					{/* /Status GIF */}
 
+					{/* Action Buttons */}
 					{connectionStatus.connected && (
 						<>
 							{currMode === STANDARD_MODE ? (
-								<View style={styles.outputContainer}>
-									<View
-										style={{
-											padding: 5,
-											backgroundColor:
-												output1Status === "on" ? "#46cf76" : "lightgray",
-											marginRight: 10,
-											borderRadius: 10,
-										}}
-									>
-										<TouchableOpacity
-											style={styles.outputWrapper}
-											onPress={() => handleOutputChange(1)}
-											activeOpacity={0.8}
-										>
-											<Text style={styles.output}>Output 1</Text>
+								<>
+									<View style={styles.outputContainer}>
+										{isRecognizing ? (
+											<SpeechModeActions />
+										) : (
 											<View
 												style={{
-													...styles.led,
+													padding: 5,
 													backgroundColor:
-														output1Status === "on" ? "#46cf76" : "lightgray",
+														output1Status === "on"
+															? COLORS.lightGreen
+															: "lightgray",
+													marginRight: 10,
+													borderRadius: 10,
 												}}
-											/>
-										</TouchableOpacity>
-									</View>
-									{channel === 2 && (
-										<View
-											style={{
-												padding: 5,
-												backgroundColor: "white",
-												borderRadius: 10,
-												backgroundColor:
-													output2Status === "on" ? "#46cf76" : "lightgray",
-											}}
-										>
-											<TouchableOpacity
-												style={styles.outputWrapper}
-												onPress={() => handleOutputChange(2)}
-												activeOpacity={0.8}
 											>
-												<Text style={styles.output}>Output 2</Text>
-												<View
-													style={{
-														...styles.led,
-														backgroundColor:
-															output2Status === "on" ? "#46cf76" : "lightgray",
-													}}
-												/>
-											</TouchableOpacity>
-										</View>
-									)}
-								</View>
+												<TouchableOpacity
+													style={styles.outputWrapper}
+													onPress={() => handleOutputChange(1)}
+													activeOpacity={0.8}
+												>
+													<Text style={styles.output}>Output 1</Text>
+													<View
+														style={{
+															...styles.led,
+															backgroundColor:
+																output1Status === "on"
+																	? COLORS.lightGreen
+																	: "lightgray",
+														}}
+													/>
+												</TouchableOpacity>
+											</View>
+										)}
+										{!isRecognizing && channel === 2 && (
+											<View
+												style={{
+													padding: 5,
+													backgroundColor: "white",
+													borderRadius: 10,
+													backgroundColor:
+														output2Status === "on"
+															? COLORS.lightGreen
+															: "lightgray",
+												}}
+											>
+												<TouchableOpacity
+													style={styles.outputWrapper}
+													onPress={() => handleOutputChange(2)}
+													activeOpacity={0.8}
+												>
+													<Text style={styles.output}>Output 2</Text>
+													<View
+														style={{
+															...styles.led,
+															backgroundColor:
+																output2Status === "on"
+																	? COLORS.lightGreen
+																	: "lightgray",
+														}}
+													/>
+												</TouchableOpacity>
+											</View>
+										)}
+									</View>
+								</>
 							) : (
 								<SportsMode />
 							)}
 						</>
 					)}
+					{/* /Action Buttons */}
 
 					{!connectionStatus.connected && <NotConnectedView />}
 				</View>
 
+				{/* Mode Changing buttons */}
 				{channel === 2 && connectionStatus.connected && (
 					<TouchableOpacity
 						onPress={changeScreenOrientation}
@@ -309,6 +400,7 @@ const Controller = ({ navigation, route }) => {
 						</Text>
 					</TouchableOpacity>
 				)}
+				{/* /Mode Changing buttons */}
 			</View>
 		</ImageBackground>
 	);
