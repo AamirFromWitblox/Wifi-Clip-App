@@ -2,7 +2,7 @@
 	"expo": {
 		"name": "Wifi Clip Controller",
 		"slug": "witblox_wifi_clip",
-		"version": "2.6.2",
+		"version": "2.6.3",
 		"jsEngine": "hermes",
 		"orientation": "portrait",
 		"icon": "./assets/icon.png",
@@ -19,11 +19,12 @@
 		"ios": {
 			"supportsTablet": true,
 			"bundleIdentifier": "com.witblox.wifiClip",
-			"buildNumber": "2.6.2",
+			"buildNumber": "2.6.3",
 			"requireFullScreen": true,
 			"jsEngine": "jsc",
 			"infoPlist": {
-				"NSMicrophoneUsageDescription": "This app uses the microphone to detect speech."
+				"NSMicrophoneUsageDescription": "This app uses the microphone to detect speech.",
+				"NSSpeechRecognitionUsageDescription": "This app uses speech recognition to control the hardware."
 			}
 		},
 		"android": {
@@ -32,7 +33,7 @@
 				"backgroundColor": "#FFFFFF"
 			},
 			"package": "com.witblox.wifi_clip",
-			"versionCode": 262
+			"versionCode": 263
 		},
 		"web": {
 			"favicon": "./assets/favicon.png"
