@@ -210,6 +210,8 @@ const Controller = ({ navigation, route }) => {
 	const handleSpeechStart = () => {
 		if (!isSrModelReady) return;
 
+		vosk.stop();
+
 		if (isRecognizing) {
 			vosk.stop();
 			setIsRecognizing(false);
