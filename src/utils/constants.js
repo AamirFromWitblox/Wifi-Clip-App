@@ -8,4 +8,5 @@ export const COLORS = {
 export const baseUrl = "http://192.168.4.1";
 // export const baseUrl = "https://itzaamir.in";
 
-export const actions = ["left", "right", "forward", "stop"];
+export const singleClipActions = ["start", "stop"];
+export const dualClipActions = ["left", "right", "forward", "stop"];

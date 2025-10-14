@@ -99,12 +99,15 @@ const SpeechModeActions = ({ activeCommand, channel }) => {
 						<View
 							style={{
 								...styles.commandContainer,
+								flexDirection: 'row',
+								justifyContent: 'center',
+								gap: 10,
 								backgroundColor:
-									activeCommand === "forward" ? COLORS.darkGreen : "white",
+									activeCommand === "start" ? COLORS.darkGreen : "white",
 							}}
 						>
+							<Text style={{ fontSize: 16 }}>Start</Text>
 							<FontAwesome6 name="play" size={20} color="black" />
-							<Text style={{ fontSize: 18 }}>Start</Text>
 						</View>
 					</View>
 
