@@ -3,7 +3,7 @@ import React from "react";
 import { FontAwesome6 } from "@expo/vector-icons";
 import { COLORS } from "../../utils/constants";
 
-const SpeechModeActions = ({ activeCommand }) => {
+const SpeechModeActions = ({ activeCommand, channel }) => {
 	return (
 		<View style={styles.container}>
 			<View
@@ -26,70 +26,105 @@ const SpeechModeActions = ({ activeCommand }) => {
 				</Text>
 			</View>
 
-			<View style={{ flexDirection: "row" }}>
-				<View
-					style={{
-						...styles.commandContainer,
-						backgroundColor:
-							activeCommand === "forward" ? COLORS.darkGreen : "white",
-					}}
-				>
-					<FontAwesome6 name="caret-up" size={20} color="black" />
-					<Text style={{ fontSize: 18 }}>Forward</Text>
-				</View>
-			</View>
+			{channel === 2 ? (
+				<>
+					<View style={{ flexDirection: "row" }}>
+						<View
+							style={{
+								...styles.commandContainer,
+								backgroundColor:
+									activeCommand === "forward" ? COLORS.darkGreen : "white",
+							}}
+						>
+							<FontAwesome6 name="caret-up" size={20} color="black" />
+							<Text style={{ fontSize: 18 }}>Forward</Text>
+						</View>
+					</View>
 
-			<View
-				style={{
-					flexDirection: "row",
-					justifyContent: "space-around",
-					marginTop: 10,
-					gap: 10,
-				}}
-			>
-				<View
-					style={{
-						...styles.commandContainer,
-						flexDirection: "row",
-						gap: 10,
-						justifyContent: "center",
-						backgroundColor:
-							activeCommand === "left" ? COLORS.darkGreen : "white",
-					}}
-				>
-					<FontAwesome6 name="caret-left" size={20} color="black" />
-					<Text style={{ fontSize: 18 }}>Left</Text>
-				</View>
-				<View
-					style={{
-						...styles.commandContainer,
-						backgroundColor:
-							activeCommand === "right" ? COLORS.darkGreen : "white",
-						flexDirection: "row",
-						gap: 10,
-						justifyContent: "center",
-					}}
-				>
-					<Text style={{ fontSize: 18 }}>Right</Text>
-					<FontAwesome6 name="caret-right" size={20} color="black" />
-				</View>
-			</View>
+					<View
+						style={{
+							flexDirection: "row",
+							justifyContent: "space-around",
+							marginTop: 10,
+							gap: 10,
+						}}
+					>
+						<View
+							style={{
+								...styles.commandContainer,
+								flexDirection: "row",
+								gap: 10,
+								justifyContent: "center",
+								backgroundColor:
+									activeCommand === "left" ? COLORS.darkGreen : "white",
+							}}
+						>
+							<FontAwesome6 name="caret-left" size={20} color="black" />
+							<Text style={{ fontSize: 18 }}>Left</Text>
+						</View>
+						<View
+							style={{
+								...styles.commandContainer,
+								backgroundColor:
+									activeCommand === "right" ? COLORS.darkGreen : "white",
+								flexDirection: "row",
+								gap: 10,
+								justifyContent: "center",
+							}}
+						>
+							<Text style={{ fontSize: 18 }}>Right</Text>
+							<FontAwesome6 name="caret-right" size={20} color="black" />
+						</View>
+					</View>
 
-			<View style={{ flexDirection: "row", marginTop: 10 }}>
-				<View
-					style={{
-						...styles.commandContainer,
-						flexDirection: "row",
-						justifyContent: "center",
-						gap: 10,
-						backgroundColor:
-							activeCommand === "stop" ? COLORS.darkGreen : "white",
-					}}
-				>
-					<Text style={{ fontSize: 18 }}>Stop</Text>
-					<FontAwesome6 name="stop" size={18} color="black" />
-				</View>
-			</View>
+					<View style={{ flexDirection: "row", marginTop: 10 }}>
+						<View
+							style={{
+								...styles.commandContainer,
+								flexDirection: "row",
+								justifyContent: "center",
+								gap: 10,
+								backgroundColor:
+									activeCommand === "stop" ? COLORS.darkGreen : "white",
+							}}
+						>
+							<Text style={{ fontSize: 18 }}>Stop</Text>
+							<FontAwesome6 name="stop" size={18} color="black" />
+						</View>
+					</View>
+				</>
+			) : (
+				<>
+					<View style={{ flexDirection: "row" }}>
+						<View
+							style={{
+								...styles.commandContainer,
+								backgroundColor:
+									activeCommand === "forward" ? COLORS.darkGreen : "white",
+							}}
+						>
+							<FontAwesome6 name="play" size={20} color="black" />
+							<Text style={{ fontSize: 18 }}>Start</Text>
+						</View>
+					</View>
+
+					<View style={{ flexDirection: "row", marginTop: 10 }}>
+						<View
+							style={{
+								...styles.commandContainer,
+								flexDirection: "row",
+								justifyContent: "center",
+								gap: 10,
+								backgroundColor:
+									activeCommand === "stop" ? COLORS.darkGreen : "white",
+							}}
+						>
+							<Text style={{ fontSize: 18 }}>Stop</Text>
+							<FontAwesome6 name="stop" size={18} color="black" />
+						</View>
+					</View>
+				</>
+			)}
 		</View>
 	);
 };

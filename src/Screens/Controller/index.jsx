@@ -315,7 +315,10 @@ const Controller = ({ navigation, route }) => {
 								<>
 									<View style={styles.outputContainer}>
 										{isRecognizing ? (
-											<SpeechModeActions activeCommand={activeCommand} />
+											<SpeechModeActions
+												activeCommand={activeCommand}
+												channel={channel}
+											/>
 										) : (
 											<View
 												style={{
